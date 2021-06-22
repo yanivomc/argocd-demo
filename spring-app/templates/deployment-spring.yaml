@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      {{- include "spring.labels" . | nindent 5 }} 
+  replicas: {{ .Values.pods.replica }}
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        {{- include "spring.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.pods.image }}:{{ .Values.pods.tag }}"
+        ports:
+        - containerPort: 8080
+ 
